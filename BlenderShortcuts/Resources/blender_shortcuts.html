@@ -8,7 +8,12 @@
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text','PingFang SC',sans-serif;background:#1a1a2e;color:#e0e0e0;min-height:100vh}
 .header{position:sticky;top:0;z-index:10;background:#16213e;padding:14px 16px;border-bottom:1px solid #2a2a4a}
-.header h1{font-size:18px;font-weight:700;color:#E67E22;margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.header h1{font-size:18px;font-weight:700;color:#E67E22;margin-bottom:10px;display:flex;align-items:center;justify-content:space-between}
+.header-actions{display:flex;gap:6px;align-items:center}
+.icon-btn{background:#222244;color:#999;border:none;border-radius:8px;width:32px;height:32px;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s}
+.icon-btn:hover{background:#E67E22;color:#fff}
+.icon-btn.active{background:#E67E22;color:#fff}
+.version-tag{font-size:10px;color:#555;font-weight:400;margin-left:4px}
 .search-box{display:flex;align-items:center;background:#222244;border-radius:10px;padding:6px 12px;border:1px solid #333366;transition:border .2s}
 .search-box:focus-within{border-color:#E67E22}
 .search-box input{flex:1;background:none;border:none;color:#e0e0e0;font-size:15px;padding:6px 0;outline:none}
@@ -32,7 +37,12 @@ body{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text','PingFang SC',sa
 .card .tag-cat{color:#aaa;background:#222244}
 .card .tag-mode{color:#888;background:#2a2a4a}
 .card .tag-high{color:#E67E22;background:#332200}
+.card .tag-custom{color:#1ABC9C;background:#0a2a2a}
 .card .desc{font-size:12px;color:#999;margin-top:4px;line-height:1.4}
+.card .card-actions{display:flex;gap:4px;margin-top:6px}
+.card .card-actions button{font-size:10px;padding:2px 8px;border-radius:4px;border:none;cursor:pointer}
+.card .btn-edit{background:#2a2a4a;color:#4A90D9}
+.card .btn-del{background:#2a0a0a;color:#E74C3C}
 .empty{text-align:center;padding:60px 20px;color:#666}
 .empty .ico{font-size:44px;margin-bottom:12px}
 .empty .hint{font-size:13px;line-height:1.8}
@@ -40,15 +50,68 @@ body{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text','PingFang SC',sa
 kbd{background:#333;color:#ddd;padding:1px 5px;border-radius:3px;font-family:'SF Mono',Menlo,monospace;font-size:11px}
 mark{background:#E67E22;color:#fff;padding:0 2px;border-radius:2px}
 .dot{color:#E67E22}
-@media(max-width:500px){
-  .card .top{flex-direction:column}
-  .card .key{margin-left:0;margin-top:4px;display:inline-block}
-}
+
+/* ═══ Panel Overlay & Custom Panel ═══ */
+.panel-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.5);z-index:100;display:none}
+.panel-overlay.show{display:block}
+.custom-panel{position:fixed;top:0;right:-420px;width:400px;height:100vh;background:#16213e;z-index:101;transition:right .3s ease;display:flex;flex-direction:column;border-left:1px solid #2a2a4a}
+.custom-panel.open{right:0}
+.panel-header{display:flex;justify-content:space-between;align-items:center;padding:14px 16px;border-bottom:1px solid #2a2a4a;background:#0f1729}
+.panel-header h2{font-size:16px;color:#E67E22}
+.panel-tabs{display:flex;border-bottom:1px solid #2a2a4a;background:#0f1729}
+.panel-tabs button{flex:1;padding:8px 0;background:none;border:none;border-bottom:2px solid transparent;color:#888;font-size:12px;cursor:pointer;transition:all .15s}
+.panel-tabs button.active{color:#E67E22;border-bottom-color:#E67E22}
+.panel-tabs button:hover{color:#ccc}
+.panel-body{flex:1;overflow-y:auto;padding:16px}
+.panel-section{margin-bottom:16px}
+.panel-section h3{font-size:13px;color:#aaa;margin-bottom:8px}
+
+/* Form styles */
+.form-group{margin-bottom:10px}
+.form-group label{display:block;font-size:11px;color:#888;margin-bottom:3px}
+.form-group input,.form-group select,.form-group textarea{width:100%;background:#222244;border:1px solid #333366;color:#e0e0e0;border-radius:6px;padding:6px 10px;font-size:13px;outline:none;transition:border .2s}
+.form-group input:focus,.form-group select:focus,.form-group textarea:focus{border-color:#E67E22}
+.form-group select{cursor:pointer}
+.form-group textarea{resize:vertical;min-height:40px}
+.form-row{display:flex;gap:8px}
+.form-row .form-group{flex:1}
+.btn{display:inline-block;padding:7px 16px;border:none;border-radius:8px;font-size:13px;cursor:pointer;transition:all .15s}
+.btn-primary{background:#E67E22;color:#fff}
+.btn-primary:hover{background:#d35400}
+.btn-secondary{background:#222244;color:#ccc;border:1px solid #333366}
+.btn-secondary:hover{background:#333366}
+.btn-danger{background:#2a0a0a;color:#E74C3C;border:1px solid #3a1a1a}
+.btn-danger:hover{background:#3a1a1a}
+.btn-sm{padding:4px 10px;font-size:11px}
+.btn-block{width:100%;text-align:center}
+
+/* Custom list */
+.custom-item{display:flex;align-items:center;justify-content:space-between;background:#222244;border-radius:8px;padding:8px 12px;margin-bottom:6px}
+.custom-item .ci-info{flex:1;min-width:0}
+.custom-item .ci-name{font-size:13px;font-weight:600;color:#fff}
+.custom-item .ci-key{font-size:11px;color:#46b5d1;font-family:'SF Mono',Menlo,monospace}
+.custom-item .ci-cat{font-size:10px;color:#888}
+.custom-item .ci-actions{display:flex;gap:4px;margin-left:8px}
+
+/* Import section */
+.import-card{background:#222244;border-radius:8px;padding:12px;margin-bottom:8px;border:1px dashed #333366}
+.import-card h4{font-size:13px;color:#ccc;margin-bottom:4px}
+.import-card p{font-size:11px;color:#888;margin-bottom:8px;line-height:1.5}
+.import-card .btn{margin-top:4px}
+
+/* Empty state in panel */
+.panel-empty{text-align:center;padding:30px 20px;color:#555}
+.panel-empty .pe-icon{font-size:28px;margin-bottom:8px}
 </style>
 </head>
 <body>
 <div class="header">
-<h1><span>🎨</span> Blender 快捷键查询</h1>
+<h1>
+<span>🎨 Blender 快捷键查询 <span class="version-tag" id="versionTag"></span></span>
+<span class="header-actions">
+<button class="icon-btn" id="settingsBtn" title="自定义快捷键 / 导入 / 导出">⚙️</button>
+</span>
+</h1>
 <div class="search-box">
 <input type="text" id="q" placeholder="搜索快捷键 (中文/拼音/快捷键)..." autofocus>
 </div>
@@ -69,188 +132,632 @@ mark{background:#E67E22;color:#fff;padding:0 2px;border-radius:2px}
 </div>
 <div class="bottom">Blender 3.6-5.2 · <span id="totalCount"></span> 条快捷键</div>
 
+<!-- ═══ Custom Panel ═══ -->
+<div class="panel-overlay" id="panelOverlay"></div>
+<div class="custom-panel" id="customPanel">
+<div class="panel-header">
+<h2>⚙️ 管理</h2>
+<button class="icon-btn" id="closePanelBtn">✕</button>
+</div>
+<div class="panel-tabs">
+<button class="active" data-tab="custom">自定义快捷键</button>
+<button data-tab="import">导入</button>
+<button data-tab="export">导出</button>
+</div>
+<div class="panel-body">
+<!-- Tab: Custom Shortcuts -->
+<div class="tab-content" id="tab-custom">
+<div class="panel-section">
+<h3>添加自定义快捷键</h3>
+<div class="form-group"><label>名称 *</label><input id="cf_name" placeholder="如：快速布尔"></div>
+<div class="form-row">
+<div class="form-group"><label>快捷键 *</label><input id="cf_key" placeholder="如：Ctrl+Shift+B"></div>
+<div class="form-group"><label>分类</label><select id="cf_cat"><option value="自定义">自定义</option></select></div>
+</div>
+<div class="form-row">
+<div class="form-group"><label>模式</label><input id="cf_mode" placeholder="如：编辑模式" value="全局"></div>
+<div class="form-group"><label>拼音</label><input id="cf_py" placeholder="如：kuaisubuer"></div>
+</div>
+<div class="form-group"><label>描述</label><textarea id="cf_desc" placeholder="功能描述"></textarea></div>
+<button class="btn btn-primary btn-block" id="addCustomBtn">添加快捷键</button>
+</div>
+<div class="panel-section">
+<h3>已添加的快捷键 <span id="customCount"></span></h3>
+<div id="customList"></div>
+</div>
+</div>
+<!-- Tab: Import -->
+<div class="tab-content" id="tab-import" style="display:none">
+<div class="import-card">
+<h4>📂 导入 Blender Keymap</h4>
+<p>从 Blender 导出 Keymap 文件后导入：Blender → 偏好设置 → 键位映射 → 导出键配置<br>支持 .py 格式的 Keymap 导出文件</p>
+<button class="btn btn-secondary btn-sm" id="importKeymapBtn">选择 .py 文件导入</button>
+</div>
+<div class="import-card">
+<h4>📦 导入 JSON 快捷键包</h4>
+<p>导入 JSON 格式的快捷键包，可与他人分享自定义快捷键集合</p>
+<button class="btn btn-secondary btn-sm" id="importJsonBtn">选择 .json 文件导入</button>
+</div>
+<div id="importLog" style="font-size:11px;color:#888;margin-top:8px"></div>
+</div>
+<!-- Tab: Export -->
+<div class="tab-content" id="tab-export" style="display:none">
+<div class="panel-section">
+<h3>导出自定义快捷键</h3>
+<p style="font-size:12px;color:#888;margin-bottom:10px">将你的自定义快捷键导出为 JSON 文件，可以分享给他人或在其他设备导入</p>
+<button class="btn btn-primary btn-block" id="exportCustomBtn">导出自定义快捷键 (.json)</button>
+</div>
+<div class="panel-section" style="margin-top:16px">
+<h3>导出全部快捷键</h3>
+<p style="font-size:12px;color:#888;margin-bottom:10px">将内置 + 自定义的所有快捷键导出为 JSON 文件</p>
+<button class="btn btn-secondary btn-block" id="exportAllBtn">导出全部快捷键 (.json)</button>
+</div>
+</div>
+</div>
+</div>
+
 <script>
-// ═══ 数据 ═══
-var PY = {"搜索命令":"sousuomingling","保存文件":"baocunwenjian","另存为":"lingcunwei","打开文件":"dakaiwenjian","新建":"xinjian","撤销":"chexiao","重做":"chongzuo","退出":"tuichu","旋转视图":"xuanzhuanshitu","平移视图":"pingyishitu","缩放视图":"suofangshitu","聚焦选中":"jujiaoxuanzhong","前视图":"qianshitu","右视图":"youshitu","顶视图":"dingshitu","后视图":"houshitu","左视图":"zuoshitu","底视图":"dishitu","透视/正交":"toushizhengjiao","相机视图":"xiangjishitu","四视图":"sishitu","游标归位":"youbiaoguiwei","游标菜单":"youbiaocaidan","侧边栏":"cebianlan","工具栏":"gongjulan","线框模式":"xiankuangmoshi","材质预览":"caizhiyulan","渲染预览":"xuranyulan","局部视图":"jubushitu","最大化区域":"zuidahuaquyu","全选":"quanxuan","框选":"kuangxuan","刷选":"shuaxuan","反选":"fanxuan","加选":"jiaxuan","循环边":"xunhuanbian","并排边":"bingpaibian","关联选择":"guanlianxuanze","相似选择":"xiangsixuanze","点模式":"dianmoshi","线模式":"xianmoshi","面模式":"mianmoshi","隐藏选中":"yincangxuanzhong","显示全部":"xianshiquanbu","隐藏未选":"yincangweixuan","移动":"yidong","旋转":"xuanzhuan","缩放":"suofang","复制":"fuzhi","关联复制":"guanlianfuzhi","删除":"shanchu","分离":"fenli","合并物体":"hebingwuti","吸附":"xifu","父子关系":"fuziguanxi","清除父级":"qingchufuji","应用变换":"yingyongbianhuan","设置原点":"shezhiyuandian","挤出":"jichu","沿法线挤出":"yanfaxianjichu","内插面":"neichamian","环切":"huanqie","偏移环切":"pianyihuanqie","倒角":"daojiao","顶点倒角":"dingdiandaojiao","切刀":"qiedao","填充面":"tianchongmian","融并":"rongbing","按距离合并":"anjulihebing","桥接循环边":"qiaojiexunhuanbian","细分":"xifen","镜像":"jingxiang","法线翻转":"faxianfanzhuan","标记缝合边":"biaojifenghebian","清除缝合边":"qingchufenghebian","标记锐边":"biaojiruibian","拆面":"chaimian","顶点连接":"dingdianlianjie","笔刷大小":"bishuadaxiao","笔刷强度":"bishuaqiangdu","反向雕刻":"fanxiangdiaoke","平滑笔刷":"pinghuabishua","遮罩":"zhezhao","清除遮罩":"qingchuzhezhao","反转遮罩":"fanzhuanzhezhao","Dyntopo":"dyntopo","重构网格":"chonggouwangge","笔刷切换":"bishuaqiehuan","展开UV":"zhankaiUV","智能UV投射":"zhinengUVtoushe","缝合":"fenghe","打包UV岛":"dabaoUVdao","移动UV":"UVyidong","旋转UV":"UVxuanzhuan","缩放UV":"UVsuofang","UV松弛":"UVsongchi","选择UV岛":"xuanzeUVdao","钉固UV":"dingguUV","添加节点":"tianjiajiedian","搜索节点":"sousuojiedian","删除节点":"shanchujiedian","断开连线":"duankailianxian","框选节点":"kuangxuanjiedian","节点编组":"jiedianbianzu","静音节点":"jingyinjiedian","预览节点":"yulanjiedian","新建材质":"xinjiancaizhi","指定材质":"zhidingcaizhi","插入关键帧":"charuguanjianzhen","删除关键帧":"shanchuguanjianzhen","播放动画":"bofangdonghua","跳到开始":"tiaodaokaishi","跳到结束":"tiaodaojieshu","前一帧":"qianyizhen","后一帧":"houyizhen","前一关键帧":"qianyiguanjianzhen","后一关键帧":"houyiguanjianzhen","自动关键帧":"zidongguanjianzhen","姿态模式":"zitaimoshi","清空姿态":"qingkongzitai","权重绘制":"quanzhonghuizhi","渲染图像":"xurantuxiang","渲染动画":"xurandonghua","视口渲染":"shikouxuran","取消渲染":"quxiaoxuran","添加灯光":"tianjiadengguang","添加摄像机":"tianjiashexiangji","相机绑定视图":"xiangjibangdingshitu","设置活动相机":"shezhihuodongxiangji","切换EEVEE":"qiehuanEEVEE","切换Cycles":"qiehuanCycles"};
-var ALL = [{"c":"通用操作","n":"搜索命令","k":"F3","m":"全局","d":"打开命令搜索面板","f":"high"},{"c":"通用操作","n":"保存文件","k":"Ctrl+S","m":"全局","d":"保存当前.blend文件","f":"high"},{"c":"通用操作","n":"另存为","k":"Shift+Ctrl+S","m":"全局","d":"另存为新文件","f":"medium"},{"c":"通用操作","n":"打开文件","k":"Ctrl+O","m":"全局","d":"打开.blend文件","f":"high"},{"c":"通用操作","n":"新建","k":"Ctrl+N","m":"全局","d":"新建空白场景","f":"medium"},{"c":"通用操作","n":"撤销","k":"Ctrl+Z","m":"全局","d":"撤销上一步操作","f":"high"},{"c":"通用操作","n":"重做","k":"Shift+Ctrl+Z","m":"全局","d":"重做已撤销的操作","f":"high"},{"c":"通用操作","n":"退出","k":"Ctrl+Q","m":"全局","d":"退出Blender","f":"medium"},{"c":"视图导航","n":"旋转视图","k":"鼠标中键拖动","m":"全局","d":"旋转3D视图视角","f":"high"},{"c":"视图导航","n":"平移视图","k":"Shift+鼠标中键","m":"全局","d":"平移3D视图","f":"high"},{"c":"视图导航","n":"缩放视图","k":"鼠标滚轮","m":"全局","d":"缩放3D视图","f":"high"},{"c":"视图导航","n":"聚焦选中","k":"小键盘 .","m":"全局","d":"视图聚焦到选中物体","f":"high"},{"c":"视图导航","n":"前视图","k":"小键盘 1","m":"全局","d":"切换到前视图(正交)","f":"high"},{"c":"视图导航","n":"右视图","k":"小键盘 3","m":"全局","d":"切换到右视图(正交)","f":"high"},{"c":"视图导航","n":"顶视图","k":"小键盘 7","m":"全局","d":"切换到顶视图(正交)","f":"high"},{"c":"视图导航","n":"后视图","k":"Ctrl+小键盘 1","m":"全局","d":"切换到后视图","f":"medium"},{"c":"视图导航","n":"左视图","k":"Ctrl+小键盘 3","m":"全局","d":"切换到左视图","f":"medium"},{"c":"视图导航","n":"底视图","k":"Ctrl+小键盘 7","m":"全局","d":"切换到底视图","f":"medium"},{"c":"视图导航","n":"透视/正交","k":"小键盘 5","m":"全局","d":"透视/正交投影切换","f":"high"},{"c":"视图导航","n":"相机视图","k":"小键盘 0","m":"全局","d":"切换到当前相机视角","f":"high"},{"c":"视图导航","n":"四视图","k":"Ctrl+Alt+Q","m":"全局","d":"切换四视图布局","f":"medium"},{"c":"视图导航","n":"游标归位","k":"Shift+C","m":"全局","d":"3D游标回到世界原点","f":"medium"},{"c":"视图导航","n":"游标菜单","k":"Shift+S","m":"全局","d":"游标/原点快捷菜单","f":"high"},{"c":"视图导航","n":"侧边栏","k":"N","m":"全局","d":"展开/折叠右侧属性面板","f":"high"},{"c":"视图导航","n":"工具栏","k":"T","m":"全局","d":"展开/折叠左侧工具栏","f":"high"},{"c":"视图导航","n":"线框模式","k":"Z→线框","m":"全局","d":"饼菜单切换为线框显示","f":"high"},{"c":"视图导航","n":"材质预览","k":"Z→材质预览","m":"全局","d":"饼菜单切换到材质预览","f":"high"},{"c":"视图导航","n":"渲染预览","k":"Z→渲染","m":"全局","d":"饼菜单切换到渲染预览","f":"high"},{"c":"视图导航","n":"局部视图","k":"小键盘 /","m":"全局","d":"隔离显示选中物体","f":"high"},{"c":"视图导航","n":"最大化区域","k":"Ctrl+Space","m":"全局","d":"最大化当前编辑器区域","f":"medium"},{"c":"选择操作","n":"全选","k":"A","m":"全局","d":"全选/取消全选","f":"high"},{"c":"选择操作","n":"框选","k":"B","m":"全局","d":"矩形框选","f":"high"},{"c":"选择操作","n":"刷选","k":"C","m":"全局","d":"圆形画笔选择","f":"medium"},{"c":"选择操作","n":"反选","k":"Ctrl+I","m":"全局","d":"反转当前选择","f":"high"},{"c":"选择操作","n":"加选","k":"Shift+左键","m":"全局","d":"追加选择","f":"high"},{"c":"选择操作","n":"循环边","k":"Alt+左键","m":"编辑模式","d":"选择整条循环边","f":"high"},{"c":"选择操作","n":"并排边","k":"Ctrl+Alt+左键","m":"编辑模式","d":"选择并排边环","f":"medium"},{"c":"选择操作","n":"关联选择","k":"Ctrl+L","m":"编辑模式","d":"选择所有相连元素","f":"high"},{"c":"选择操作","n":"相似选择","k":"Shift+G","m":"编辑模式","d":"选择相似属性的元素","f":"medium"},{"c":"选择操作","n":"点模式","k":"1","m":"编辑模式","d":"切换到顶点选择模式","f":"high"},{"c":"选择操作","n":"线模式","k":"2","m":"编辑模式","d":"切换到边选择模式","f":"high"},{"c":"选择操作","n":"面模式","k":"3","m":"编辑模式","d":"切换到面选择模式","f":"high"},{"c":"选择操作","n":"隐藏选中","k":"H","m":"全局","d":"隐藏选中的物体/元素","f":"high"},{"c":"选择操作","n":"显示全部","k":"Alt+H","m":"全局","d":"取消所有隐藏","f":"high"},{"c":"选择操作","n":"隐藏未选","k":"Shift+H","m":"全局","d":"隐藏未选中的元素","f":"medium"},{"c":"变换操作","n":"移动","k":"G","m":"全局","d":"移动选中的物体/元素","f":"high"},{"c":"变换操作","n":"旋转","k":"R","m":"全局","d":"旋转选中的物体/元素","f":"high"},{"c":"变换操作","n":"缩放","k":"S","m":"全局","d":"缩放选中的物体/元素","f":"high"},{"c":"变换操作","n":"沿X轴移动","k":"G+X","m":"全局","d":"锁定X轴移动","f":"high"},{"c":"变换操作","n":"沿Y轴移动","k":"G+Y","m":"全局","d":"锁定Y轴移动","f":"high"},{"c":"变换操作","n":"沿Z轴移动","k":"G+Z","m":"全局","d":"锁定Z轴移动","f":"high"},{"c":"变换操作","n":"复制","k":"Shift+D","m":"全局","d":"复制选中的物体/元素","f":"high"},{"c":"变换操作","n":"关联复制","k":"Alt+D","m":"物体模式","d":"创建关联副本","f":"medium"},{"c":"变换操作","n":"删除","k":"X","m":"全局","d":"删除选中的物体/元素","f":"high"},{"c":"变换操作","n":"分离","k":"P","m":"编辑模式","d":"将选中部分分离为新物体","f":"high"},{"c":"变换操作","n":"合并物体","k":"Ctrl+J","m":"物体模式","d":"将多个物体合并","f":"medium"},{"c":"变换操作","n":"吸附","k":"Shift+Tab","m":"全局","d":"开启/关闭吸附功能","f":"high"},{"c":"变换操作","n":"父子关系","k":"Ctrl+P","m":"物体模式","d":"设置父子关系/绑定","f":"medium"},{"c":"变换操作","n":"清除父级","k":"Alt+P","m":"物体模式","d":"清除父子关系","f":"medium"},{"c":"变换操作","n":"应用变换","k":"Ctrl+A","m":"物体模式","d":"应用位置/旋转/缩放","f":"high"},{"c":"变换操作","n":"设置原点","k":"Shift+Ctrl+Alt+C","m":"物体模式","d":"设置物体原点位置","f":"medium"},{"c":"编辑模式-建模","n":"挤出","k":"E","m":"编辑模式","d":"挤出选中的面/边/点","f":"high"},{"c":"编辑模式-建模","n":"沿法线挤出","k":"Alt+E→沿法线","m":"编辑模式","d":"沿面法线方向挤出","f":"high"},{"c":"编辑模式-建模","n":"内插面","k":"I","m":"编辑模式","d":"创建内插面","f":"high"},{"c":"编辑模式-建模","n":"环切","k":"Ctrl+R","m":"编辑模式","d":"添加循环边(滚轮调段数)","f":"high"},{"c":"编辑模式-建模","n":"偏移环切","k":"Ctrl+Shift+R","m":"编辑模式","d":"偏移滑动循环边","f":"medium"},{"c":"编辑模式-建模","n":"倒角","k":"Ctrl+B","m":"编辑模式","d":"对边/点进行倒角处理","f":"high"},{"c":"编辑模式-建模","n":"顶点倒角","k":"Shift+Ctrl+B","m":"编辑模式","d":"对顶点进行倒角","f":"medium"},{"c":"编辑模式-建模","n":"切刀","k":"K","m":"编辑模式","d":"自由切割工具(回车确认)","f":"high"},{"c":"编辑模式-建模","n":"填充面","k":"F","m":"编辑模式","d":"在选中边/点间创建面","f":"high"},{"c":"编辑模式-建模","n":"融并","k":"M","m":"编辑模式","d":"合并顶点(可选择方式)","f":"high"},{"c":"编辑模式-建模","n":"按距离合并","k":"M→按距离","m":"编辑模式","d":"合并距离过近的顶点","f":"high"},{"c":"编辑模式-建模","n":"桥接循环边","k":"Ctrl+E→桥接","m":"编辑模式","d":"在两个循环边间创建面","f":"high"},{"c":"编辑模式-建模","n":"细分","k":"Ctrl+1/2/3/4/5","m":"物体模式","d":"添加细分修改器","f":"high"},{"c":"编辑模式-建模","n":"镜像","k":"Ctrl+M","m":"全局","d":"镜像选中的物体/元素","f":"medium"},{"c":"编辑模式-建模","n":"法线翻转","k":"Alt+N→翻转","m":"编辑模式","d":"翻转选中面的法线","f":"medium"},{"c":"编辑模式-建模","n":"标记缝合边","k":"Ctrl+E→标记缝合边","m":"编辑模式","d":"标记UV缝合边","f":"high"},{"c":"编辑模式-建模","n":"清除缝合边","k":"Ctrl+E→清除缝合边","m":"编辑模式","d":"清除UV缝合标记","f":"medium"},{"c":"编辑模式-建模","n":"标记锐边","k":"Ctrl+E→标记锐边","m":"编辑模式","d":"标记选中的边为锐边","f":"medium"},{"c":"编辑模式-建模","n":"拆面","k":"Y","m":"编辑模式","d":"将选中的面从周围拆分","f":"medium"},{"c":"编辑模式-建模","n":"顶点连接","k":"J","m":"编辑模式","d":"在两顶点间连接边","f":"medium"},{"c":"雕刻模式","n":"笔刷大小","k":"F","m":"雕刻模式","d":"拖动调整笔刷半径","f":"high"},{"c":"雕刻模式","n":"笔刷强度","k":"Shift+F","m":"雕刻模式","d":"拖动调整笔刷强度","f":"high"},{"c":"雕刻模式","n":"反向雕刻","k":"按住Ctrl","m":"雕刻模式","d":"临时切换为反向雕刻","f":"high"},{"c":"雕刻模式","n":"平滑笔刷","k":"按住Shift","m":"雕刻模式","d":"临时切换为平滑笔刷","f":"high"},{"c":"雕刻模式","n":"遮罩","k":"M","m":"雕刻模式","d":"绘制遮罩(按住Ctrl擦除)","f":"high"},{"c":"雕刻模式","n":"清除遮罩","k":"Alt+M","m":"雕刻模式","d":"清除所有遮罩","f":"high"},{"c":"雕刻模式","n":"反转遮罩","k":"Ctrl+I","m":"雕刻模式","d":"反转遮罩区域","f":"medium"},{"c":"雕刻模式","n":"Dyntopo","k":"Ctrl+D","m":"雕刻模式","d":"开启/关闭动态拓扑","f":"medium"},{"c":"雕刻模式","n":"重构网格","k":"Shift+R","m":"雕刻模式","d":"对网格重新体素化","f":"high"},{"c":"雕刻模式","n":"笔刷切换","k":"Shift+Space","m":"雕刻模式","d":"笔刷快速切换菜单","f":"medium"},{"c":"UV编辑","n":"展开UV","k":"U","m":"编辑模式","d":"UV展开菜单","f":"high"},{"c":"UV编辑","n":"智能UV投射","k":"U→智能UV","m":"编辑模式","d":"智能UV投射展开","f":"high"},{"c":"UV编辑","n":"缝合","k":"V","m":"UV编辑器","d":"将UV边缝合/焊接","f":"high"},{"c":"UV编辑","n":"打包UV岛","k":"Ctrl+P","m":"UV编辑器","d":"将所有UV岛打包","f":"high"},{"c":"UV编辑","n":"移动UV","k":"G","m":"UV编辑器","d":"移动选中的UV元素","f":"high"},{"c":"UV编辑","n":"旋转UV","k":"R","m":"UV编辑器","d":"旋转选中的UV元素","f":"high"},{"c":"UV编辑","n":"缩放UV","k":"S","m":"UV编辑器","d":"缩放选中的UV元素","f":"high"},{"c":"UV编辑","n":"UV松弛","k":"Ctrl+V","m":"UV编辑器","d":"松弛UV减轻拉伸","f":"medium"},{"c":"UV编辑","n":"选择UV岛","k":"L","m":"UV编辑器","d":"选择相连的整个UV岛","f":"high"},{"c":"UV编辑","n":"钉固UV","k":"P","m":"UV编辑器","d":"钉住选中的UV点","f":"medium"},{"c":"着色-节点","n":"添加节点","k":"Shift+A","m":"节点编辑器","d":"添加节点","f":"high"},{"c":"着色-节点","n":"搜索节点","k":"Ctrl+Shift+A","m":"节点编辑器","d":"搜索并添加节点","f":"high"},{"c":"着色-节点","n":"删除节点","k":"X","m":"节点编辑器","d":"删除选中的节点","f":"high"},{"c":"着色-节点","n":"断开连线","k":"Ctrl+拖拽","m":"节点编辑器","d":"切断节点间的连线","f":"medium"},{"c":"着色-节点","n":"框选节点","k":"B","m":"节点编辑器","d":"矩形框选节点","f":"high"},{"c":"着色-节点","n":"节点编组","k":"Ctrl+G","m":"节点编辑器","d":"将节点编组","f":"medium"},{"c":"着色-节点","n":"静音节点","k":"M","m":"节点编辑器","d":"静音/激活节点","f":"medium"},{"c":"着色-节点","n":"预览节点","k":"Ctrl+Shift+左键","m":"节点编辑器","d":"连接到输出预览","f":"medium"},{"c":"着色-节点","n":"新建材质","k":"材质面板→新建","m":"属性面板","d":"新建材质槽","f":"medium"},{"c":"着色-节点","n":"指定材质","k":"材质面板→指定","m":"属性面板","d":"将材质指定给物体","f":"medium"},{"c":"动画-绑定","n":"插入关键帧","k":"I","m":"全局","d":"为当前属性插入关键帧","f":"high"},{"c":"动画-绑定","n":"删除关键帧","k":"Alt+I","m":"全局","d":"删除当前属性关键帧","f":"medium"},{"c":"动画-绑定","n":"播放动画","k":"Space","m":"全局","d":"播放/暂停动画","f":"high"},{"c":"动画-绑定","n":"跳到开始","k":"Shift+←","m":"时间线","d":"跳转到动画开始帧","f":"high"},{"c":"动画-绑定","n":"跳到结束","k":"Shift+→","m":"时间线","d":"跳转到动画结束帧","f":"medium"},{"c":"动画-绑定","n":"前一帧","k":"←","m":"时间线","d":"跳到前一帧","f":"high"},{"c":"动画-绑定","n":"后一帧","k":"→","m":"时间线","d":"跳到后一帧","f":"high"},{"c":"动画-绑定","n":"前一关键帧","k":"↓","m":"时间线","d":"跳到前一个关键帧","f":"medium"},{"c":"动画-绑定","n":"后一关键帧","k":"↑","m":"时间线","d":"跳到后一个关键帧","f":"medium"},{"c":"动画-绑定","n":"自动关键帧","k":"🔴按钮","m":"时间线","d":"切换自动关键帧模式","f":"high"},{"c":"动画-绑定","n":"姿态模式","k":"Ctrl+Tab→姿态","m":"物体","d":"切换到姿态模式","f":"high"},{"c":"动画-绑定","n":"清空姿态","k":"Alt+R/G/S","m":"姿态模式","d":"清空骨骼变换","f":"medium"},{"c":"动画-绑定","n":"权重绘制","k":"Ctrl+Tab→权重","m":"物体","d":"切换到权重绘制模式","f":"high"},{"c":"渲染","n":"渲染图像","k":"F12","m":"全局","d":"渲染当前帧为图像","f":"high"},{"c":"渲染","n":"渲染动画","k":"Ctrl+F12","m":"全局","d":"渲染整个动画序列","f":"high"},{"c":"渲染","n":"视口渲染","k":"Z→渲染","m":"全局","d":"在视口中实时渲染预览","f":"high"},{"c":"渲染","n":"取消渲染","k":"Esc","m":"渲染中","d":"取消正在进行的渲染","f":"medium"},{"c":"渲染","n":"添加灯光","k":"Shift+A→灯光","m":"物体模式","d":"添加灯光物体","f":"high"},{"c":"渲染","n":"添加摄像机","k":"Shift+A→摄像机","m":"物体模式","d":"添加摄像机","f":"high"},{"c":"渲染","n":"相机绑定视图","k":"N面板→锁定","m":"全局","d":"视角锁定到摄像机","f":"medium"},{"c":"渲染","n":"设置活动相机","k":"Ctrl+小键盘 0","m":"全局","d":"设为活动相机","f":"medium"},{"c":"渲染","n":"切换EEVEE","k":"属性面板→EEVEE","m":"属性面板","d":"EEVEE实时渲染引擎","f":"high"},{"c":"渲染","n":"切换Cycles","k":"属性面板→Cycles","m":"属性面板","d":"Cycles物理渲染引擎","f":"high"}];
+// ═══ 内置数据 ═══
+var PY = {"搜索命令":"sousuomingling","保存文件":"baocunwenjian","另存为":"lingcunwei","打开文件":"dakaiwenjian","新建":"xinjian","撤销":"chexiao","重做":"chongzuo","退出":"tuichu","旋转视图":"xuanzhuanshitu","平移视图":"pingyishitu","缩放视图":"suofangshitu","聚焦选中":"jujiaoxuanzhong","前视图":"qianshitu","右视图":"youshitu","顶视图":"dingshitu","后视图":"houshitu","左视图":"zuoshitu","底视图":"dishitu","透视/正交":"toushizhengjiao","相机视图":"xiangjishitu","四视图":"sishitu","游标归位":"youbiaoguiwei","游标菜单":"youbiaocaidan","侧边栏":"cebianlan","工具栏":"gongjulan","线框模式":"xiankuangmoshi","材质预览":"caizhiyulan","渲染预览":"xuranyulan","局部视图":"jubushitu","最大化区域":"zuidahuaquyu","全选":"quanxuan","框选":"kuangxuan","刷选":"shuaxuan","反选":"fanxuan","加选":"jiaxuan","循环边":"xunhuanbian","并排边":"bingpaibian","关联选择":"guanlianxuanze","相似选择":"xiangsixuanze","点模式":"dianmoshi","线模式":"xianmoshi","面模式":"mianmoshi","隐藏选中":"yincangxuanzhong","显示全部":"xianshiquanbu","隐藏未选":"yincangweixuan","移动":"yidong","旋转":"xuanzhuan","缩放":"suofang","复制":"fuzhi","关联复制":"guanlianfuzhi","删除":"shanchu","分离":"fenli","合并物体":"hebingwuti","吸附":"xifu","父子关系":"fuziguanxi","清除父级":"qingchufuji","应用变换":"yingyongbianhuan","设置原点":"shezhiyuandian","挤出":"jichu","沿法线挤出":"yanfaxianjichu","内插面":"neichamian","环切":"huanqie","偏移环切":"pianyihuanqie","倒角":"daojiao","顶点倒角":"dingdiandaojiao","切刀":"qiedao","填充面":"tianchongmian","融并":"rongbing","按距离合并":"anjulihebing","桥接循环边":"qiaojiexunhuanbian","细分":"xifen","镜像":"jingxiang","法线翻转":"faxianfanzhuan","标记缝合边":"biaojifenghebian","清除缝合边":"qingchufenghebian","标记锐边":"biaojiruibian","拆面":"chaimian","顶点连接":"dingdianlianjie","笔刷大小":"bishuadaxiao","笔刷强度":"bishuaqiangdu","反向雕刻":"fanxiangdiaoke","平滑笔刷":"pinghuabishua","遮罩":"zhezhao","清除遮罩":"qingchuzhezhao","反转遮罩":"fanzhuanzhezhao","Dyntopo":"dyntopo","重构网格":"chonggouwangge","笔刷切换":"bishuaqiehuan","展开UV":"zhankaiUV","智能UV投射":"zhinengUVtoushe","缝合":"fenghe","打包UV岛":"dabaoUVdao","移动UV":"UVyidong","旋转UV":"UVxuanzhuan","缩放UV":"UVsuofang","UV松弛":"UVsongchi","选择UV岛":"xuanzeUVdao","钉固UV":"dingguUV","添加节点":"tianjiajiedian","搜索节点":"sousuojiedian","连接节点":"lianjiejiedian","断开节点":"duankaijiedian","预览节点":"yulanjiedian","帧选中":"zhenxuanzhong","查看全部":"chakanquanbu","节点组":"jiedianzu","添加文件节点":"tianjiawenjianjiedian","插入关键帧":"charuguanjianzhen","删除关键帧":"shanchuguanjianzhen","复制关键帧":"fuzhiguanjianzhen","关键帧插值":"guanjianzhenchazhi","播放动画":"bofangdonghua","倒放":"daofang","下一帧":"xiayizhen","上一帧":"shangyizhen","跳到开头":"tiaodaochutou","跳到结尾":"tiaodaojiewei","姿态模式":"zitaimoshi","添加骨骼":"tianjiaguge","骨骼层级":"gugucengji","自动法向权重":"zidongfaxiangquanzhong","渲染图像":"xurantuxiang","渲染动画":"xurandonghua","渲染设置":"xuranshezhi","切换渲染引擎":"qiehuanxuranyinqing","添加灯光":"tianjiadengguang","添加相机":"tianjiaxiangji","批量渲染":"piliangxuran"};
+var ALL = [{"c":"通用操作","n":"搜索命令","k":"F3","m":"全局","d":"打开命令搜索面板","f":"high"},{"c":"通用操作","n":"保存文件","k":"Ctrl+S","m":"全局","d":"保存当前.blend文件","f":"high"},{"c":"通用操作","n":"另存为","k":"Shift+Ctrl+S","m":"全局","d":"另存为新文件","f":"medium"},{"c":"通用操作","n":"打开文件","k":"Ctrl+O","m":"全局","d":"打开.blend文件","f":"high"},{"c":"通用操作","n":"新建","k":"Ctrl+N","m":"全局","d":"新建空白场景","f":"medium"},{"c":"通用操作","n":"撤销","k":"Ctrl+Z","m":"全局","d":"撤销上一步操作","f":"high"},{"c":"通用操作","n":"重做","k":"Shift+Ctrl+Z","m":"全局","d":"重做已撤销的操作","f":"high"},{"c":"通用操作","n":"退出","k":"Ctrl+Q","m":"全局","d":"退出Blender","f":"medium"},{"c":"视图导航","n":"旋转视图","k":"鼠标中键拖动","m":"全局","d":"旋转3D视图视角","f":"high"},{"c":"视图导航","n":"平移视图","k":"Shift+鼠标中键","m":"全局","d":"平移3D视图","f":"high"},{"c":"视图导航","n":"缩放视图","k":"鼠标滚轮","m":"全局","d":"缩放3D视图","f":"high"},{"c":"视图导航","n":"聚焦选中","k":"小键盘 .","m":"全局","d":"视图聚焦到选中物体","f":"high"},{"c":"视图导航","n":"前视图","k":"小键盘 1","m":"全局","d":"切换到前视图(正交)","f":"high"},{"c":"视图导航","n":"右视图","k":"小键盘 3","m":"全局","d":"切换到右视图(正交)","f":"high"},{"c":"视图导航","n":"顶视图","k":"小键盘 7","m":"全局","d":"切换到顶视图(正交)","f":"high"},{"c":"视图导航","n":"后视图","k":"Ctrl+小键盘 1","m":"全局","d":"切换到后视图","f":"medium"},{"c":"视图导航","n":"左视图","k":"Ctrl+小键盘 3","m":"全局","d":"切换到左视图","f":"medium"},{"c":"视图导航","n":"底视图","k":"Ctrl+小键盘 7","m":"全局","d":"切换到底视图","f":"medium"},{"c":"视图导航","n":"透视/正交","k":"小键盘 5","m":"全局","d":"透视/正交投影切换","f":"high"},{"c":"视图导航","n":"相机视图","k":"小键盘 0","m":"全局","d":"切换到当前相机视角","f":"high"},{"c":"视图导航","n":"四视图","k":"Ctrl+Alt+Q","m":"全局","d":"切换四视图布局","f":"medium"},{"c":"视图导航","n":"游标归位","k":"Shift+C","m":"全局","d":"3D游标回到世界原点","f":"medium"},{"c":"视图导航","n":"游标菜单","k":"Shift+S","m":"全局","d":"游标/原点快捷菜单","f":"high"},{"c":"视图导航","n":"侧边栏","k":"N","m":"全局","d":"展开/折叠右侧属性面板","f":"high"},{"c":"视图导航","n":"工具栏","k":"T","m":"全局","d":"展开/折叠左侧工具栏","f":"high"},{"c":"视图导航","n":"线框模式","k":"Z→线框","m":"全局","d":"饼菜单切换为线框显示","f":"high"},{"c":"视图导航","n":"材质预览","k":"Z→材质预览","m":"全局","d":"饼菜单切换到材质预览","f":"high"},{"c":"视图导航","n":"渲染预览","k":"Z→渲染","m":"全局","d":"饼菜单切换到渲染预览","f":"high"},{"c":"视图导航","n":"局部视图","k":"小键盘 /","m":"全局","d":"仅显示选中物体","f":"high"},{"c":"视图导航","n":"最大化区域","k":"Ctrl+空格","m":"全局","d":"最大化当前视图区域","f":"medium"},{"c":"选择操作","n":"全选","k":"A","m":"全局","d":"全选/取消全选","f":"high"},{"c":"选择操作","n":"框选","k":"B","m":"3D视图","d":"框选工具","f":"high"},{"c":"选择操作","n":"刷选","k":"C","m":"3D视图","d":"画刷选择","f":"medium"},{"c":"选择操作","n":"反选","k":"Ctrl+I","m":"全局","d":"反选当前选择","f":"high"},{"c":"选择操作","n":"加选","k":"Shift+左键","m":"3D视图","d":"追加选择","f":"high"},{"c":"选择操作","n":"循环边","k":"Alt+左键","m":"编辑模式","d":"选择循环边","f":"high"},{"c":"选择操作","n":"并排边","k":"Shift+Alt+左键","m":"编辑模式","d":"选择并排边","f":"medium"},{"c":"选择操作","n":"关联选择","k":"L","m":"3D视图","d":"选择关联元素","f":"high"},{"c":"选择操作","n":"相似选择","k":"Shift+G","m":"编辑模式","d":"按相似特征选择","f":"medium"},{"c":"选择操作","n":"点模式","k":"1","m":"编辑模式","d":"切换到顶点选择模式","f":"high"},{"c":"选择操作","n":"线模式","k":"2","m":"编辑模式","d":"切换到边选择模式","f":"high"},{"c":"选择操作","n":"面模式","k":"3","m":"编辑模式","d":"切换到面选择模式","f":"high"},{"c":"选择操作","n":"隐藏选中","k":"H","m":"全局","d":"隐藏选中物体","f":"high"},{"c":"选择操作","n":"显示全部","k":"Alt+H","m":"全局","d":"显示所有隐藏物体","f":"high"},{"c":"选择操作","n":"隐藏未选","k":"Shift+H","m":"全局","d":"隐藏未选中物体","f":"medium"},{"c":"变换操作","n":"移动","k":"G","m":"3D视图","d":"移动选中物体","f":"high"},{"c":"变换操作","n":"旋转","k":"R","m":"3D视图","d":"旋转选中物体","f":"high"},{"c":"变换操作","n":"缩放","k":"S","m":"3D视图","d":"缩放选中物体","f":"high"},{"c":"变换操作","n":"复制","k":"Shift+D","m":"3D视图","d":"复制选中物体","f":"high"},{"c":"变换操作","n":"关联复制","k":"Alt+D","m":"3D视图","d":"创建关联复制","f":"medium"},{"c":"变换操作","n":"删除","k":"X / Delete","m":"3D视图","d":"删除选中物体","f":"high"},{"c":"变换操作","n":"分离","k":"P","m":"编辑模式","d":"分离选中部分为新物体","f":"high"},{"c":"变换操作","n":"合并物体","k":"Ctrl+J","m":"3D视图","d":"合并选中物体为一个","f":"high"},{"c":"变换操作","n":"吸附","k":"Shift+S","m":"3D视图","d":"打开吸附菜单","f":"high"},{"c":"变换操作","n":"父子关系","k":"Ctrl+P","m":"3D视图","d":"设置父级关系","f":"high"},{"c":"变换操作","n":"清除父级","k":"Alt+P","m":"3D视图","d":"清除父级关系","f":"medium"},{"c":"变换操作","n":"应用变换","k":"Ctrl+A","m":"3D视图","d":"应用变换到物体数据","f":"high"},{"c":"变换操作","n":"设置原点","k":"右键菜单","m":"3D视图","d":"设置物体原点位置","f":"medium"},{"c":"编辑模式-建模","n":"挤出","k":"E","m":"编辑模式","d":"挤出选中面/顶点","f":"high"},{"c":"编辑模式-建模","n":"沿法线挤出","k":"Alt+E→沿法线","m":"编辑模式","d":"沿法线方向挤出","f":"medium"},{"c":"编辑模式-建模","n":"内插面","k":"I","m":"编辑模式","d":"向内缩放选中的面","f":"high"},{"c":"编辑模式-建模","n":"环切","k":"Ctrl+R","m":"编辑模式","d":"添加环切线","f":"high"},{"c":"编辑模式-建模","n":"偏移环切","k":"Ctrl+Shift+R","m":"编辑模式","d":"添加偏移环切线","f":"medium"},{"c":"编辑模式-建模","n":"倒角","k":"Ctrl+B","m":"编辑模式","d":"倒角选中边","f":"high"},{"c":"编辑模式-建模","n":"顶点倒角","k":"Ctrl+Shift+B","m":"编辑模式","d":"倒角选中顶点","f":"medium"},{"c":"编辑模式-建模","n":"切刀","k":"K","m":"编辑模式","d":"手动切割面","f":"high"},{"c":"编辑模式-建模","n":"填充面","k":"F","m":"编辑模式","d":"填充选中边为面","f":"high"},{"c":"编辑模式-建模","n":"融并","k":"Ctrl+X","m":"编辑模式","d":"融并删除保持网格","f":"medium"},{"c":"编辑模式-建模","n":"按距离合并","k":"M→按距离","m":"编辑模式","d":"合并距离内的顶点","f":"high"},{"c":"编辑模式-建模","n":"桥接循环边","k":"Ctrl+E→桥接","m":"编辑模式","d":"桥接两条循环边","f":"medium"},{"c":"编辑模式-建模","n":"细分","k":"右键菜单→细分","m":"编辑模式","d":"细分选中面","f":"medium"},{"c":"编辑模式-建模","n":"镜像","k":"Ctrl+M","m":"编辑模式","d":"镜像选中元素","f":"medium"},{"c":"编辑模式-建模","n":"法线翻转","k":"Ctrl+Shift+N","m":"编辑模式","d":"翻转选中面法线","f":"low"},{"c":"编辑模式-建模","n":"标记缝合边","k":"Ctrl+E→标记缝合边","m":"编辑模式","d":"标记/取消缝合边","f":"medium"},{"c":"编辑模式-建模","n":"标记锐边","k":"Ctrl+E→标记锐边","m":"编辑模式","d":"标记/取消锐边","f":"medium"},{"c":"编辑模式-建模","n":"拆面","k":"Y","m":"编辑模式","d":"拆分选中面","f":"medium"},{"c":"编辑模式-建模","n":"顶点连接","k":"J","m":"编辑模式","d":"连接两个顶点并创建边","f":"medium"},{"c":"雕刻模式","n":"笔刷大小","k":"F","m":"雕刻模式","d":"调整笔刷半径","f":"high"},{"c":"雕刻模式","n":"笔刷强度","k":"Shift+F","m":"雕刻模式","d":"调整笔刷强度","f":"high"},{"c":"雕刻模式","n":"反向雕刻","k":"Ctrl","m":"雕刻模式","d":"按住Ctrl反转雕刻效果","f":"high"},{"c":"雕刻模式","n":"平滑笔刷","k":"Shift","m":"雕刻模式","d":"按住Shift切换平滑笔刷","f":"high"},{"c":"雕刻模式","n":"遮罩","k":"M","m":"雕刻模式","d":"绘制遮罩区域","f":"high"},{"c":"雕刻模式","n":"清除遮罩","k":"Alt+M","m":"雕刻模式","d":"清除所有遮罩","f":"medium"},{"c":"雕刻模式","n":"反转遮罩","k":"Ctrl+I","m":"雕刻模式","d":"反转遮罩","f":"medium"},{"c":"雕刻模式","n":"Dyntopo","k":"Ctrl+D","m":"雕刻模式","d":"切换动态拓扑","f":"high"},{"c":"雕刻模式","n":"重构网格","k":"Ctrl+R","m":"雕刻模式","d":"重构网格(Voxel Remesh)","f":"medium"},{"c":"雕刻模式","n":"笔刷切换","k":"数字键1-9","m":"雕刻模式","d":"快速切换预设笔刷","f":"medium"},{"c":"UV编辑","n":"展开UV","k":"U","m":"UV编辑器","d":"展开UV映射","f":"high"},{"c":"UV编辑","n":"智能UV投射","k":"U→智能UV投射","m":"UV编辑器","d":"自动投射UV","f":"medium"},{"c":"UV编辑","n":"缝合","k":"Ctrl+E→缝合","m":"UV编辑器","d":"标记UV缝合边","f":"medium"},{"c":"UV编辑","n":"打包UV岛","k":"P","m":"UV编辑器","d":"自动排列UV岛","f":"high"},{"c":"UV编辑","n":"移动UV","k":"G","m":"UV编辑器","d":"移动选中UV","f":"high"},{"c":"UV编辑","n":"旋转UV","k":"R","m":"UV编辑器","d":"旋转选中UV","f":"high"},{"c":"UV编辑","n":"缩放UV","k":"S","m":"UV编辑器","d":"缩放选中UV","f":"high"},{"c":"UV编辑","n":"UV松弛","k":"Ctrl+V→松弛","m":"UV编辑器","d":"松弛UV网格","f":"low"},{"c":"UV编辑","n":"选择UV岛","k":"L","m":"UV编辑器","d":"选择关联的UV岛","f":"high"},{"c":"UV编辑","n":"钉固UV","k":"P→钉固","m":"UV编辑器","d":"钉固UV顶点位置","f":"medium"},{"c":"着色-节点","n":"添加节点","k":"Shift+A","m":"节点编辑器","d":"添加节点搜索菜单","f":"high"},{"c":"着色-节点","n":"搜索节点","k":"Shift+A→搜索","m":"节点编辑器","d":"搜索并添加节点","f":"high"},{"c":"着色-节点","n":"连接节点","k":"拖拽","m":"节点编辑器","d":"拖拽连接节点接口","f":"high"},{"c":"着色-节点","n":"断开节点","k":"Ctrl+拖拽","m":"节点编辑器","d":"Ctrl+拖拽断开连线","f":"medium"},{"c":"着色-节点","n":"预览节点","k":"Ctrl+Shift+左键","m":"节点编辑器","d":"预览选中节点输出","f":"medium"},{"c":"着色-节点","n":"帧选中","k":"Ctrl+M","m":"节点编辑器","d":"将选中节点放入帧","f":"medium"},{"c":"着色-节点","n":"查看全部","k":"Home","m":"节点编辑器","d":"查看全部节点","f":"high"},{"c":"着色-节点","n":"节点组","k":"Ctrl+G","m":"节点编辑器","d":"将选中节点编成组","f":"high"},{"c":"着色-节点","n":"添加文件节点","k":"Shift+A→纹理→图像","m":"节点编辑器","d":"添加图像纹理节点","f":"medium"},{"c":"动画-绑定","n":"插入关键帧","k":"I","m":"3D视图","d":"在当前位置插入关键帧","f":"high"},{"c":"动画-绑定","n":"删除关键帧","k":"Alt+I","m":"3D视图","d":"删除选中关键帧","f":"medium"},{"c":"动画-绑定","n":"复制关键帧","k":"Ctrl+C","m":"时间线","d":"复制关键帧","f":"medium"},{"c":"动画-绑定","n":"关键帧插值","k":"T","m":"时间线","d":"设置关键帧插值类型","f":"medium"},{"c":"动画-绑定","n":"播放动画","k":"空格","m":"3D视图","d":"播放/暂停动画","f":"high"},{"c":"动画-绑定","n":"倒放","k":"Shift+Ctrl+空格","m":"3D视图","d":"反向播放动画","f":"low"},{"c":"动画-绑定","n":"下一帧","k":"右方向键","m":"3D视图","d":"跳到下一帧","f":"high"},{"c":"动画-绑定","n":"上一帧","k":"左方向键","m":"3D视图","d":"跳到上一帧","f":"high"},{"c":"动画-绑定","n":"跳到开头","k":"Shift+左方向键","m":"时间线","d":"跳到动画起始帧","f":"medium"},{"c":"动画-绑定","n":"跳到结尾","k":"Shift+右方向键","m":"时间线","d":"跳到动画结束帧","f":"medium"},{"c":"动画-绑定","n":"姿态模式","k":"Ctrl+Tab","m":"3D视图","d":"切换到姿态模式","f":"high"},{"c":"动画-绑定","n":"添加骨骼","k":"Shift+A→骨骼","m":"3D视图","d":"添加骨骼","f":"medium"},{"c":"动画-绑定","n":"骨骼层级","k":"Tab","m":"姿态模式","d":"切换编辑/姿态模式","f":"medium"},{"c":"动画-绑定","n":"自动法向权重","k":"Ctrl+N","m":"姿态模式","d":"自动计算法向权重","f":"medium"},{"c":"渲染","n":"渲染图像","k":"F12","m":"全局","d":"渲染当前帧","f":"high"},{"c":"渲染","n":"渲染动画","k":"Ctrl+F12","m":"全局","d":"渲染动画序列","f":"high"},{"c":"渲染","n":"渲染设置","k":"F12旁属性面板","m":"全局","d":"打开渲染属性设置","f":"high"},{"c":"渲染","n":"切换渲染引擎","k":"渲染属性面板","m":"全局","d":"切换EEVEE/Cycles/Workbench","f":"medium"},{"c":"渲染","n":"添加灯光","k":"Shift+A→灯光","m":"3D视图","d":"添加灯光对象","f":"high"},{"c":"渲染","n":"添加相机","k":"Shift+A→相机","m":"3D视图","d":"添加相机对象","f":"high"},{"c":"渲染","n":"批量渲染","k":"脚本/命令行","m":"全局","d":"通过脚本批量渲染","f":"low"}];
 var CATS = ["通用操作","视图导航","选择操作","变换操作","编辑模式-建模","雕刻模式","UV编辑","着色-节点","动画-绑定","渲染"];
-var CC = {"通用操作":"#4A90D9","视图导航":"#27AE60","选择操作":"#8E44AD","变换操作":"#E67E22","编辑模式-建模":"#E74C3C","雕刻模式":"#3498DB","UV编辑":"#1ABC9C","着色-节点":"#F39C12","动画-绑定":"#E91E63","渲染":"#C0392B"};
+var CC = {"通用操作":"#4A90D9","视图导航":"#27AE60","选择操作":"#8E44AD","变换操作":"#E67E22","编辑模式-建模":"#E74C3C","雕刻模式":"#3498DB","UV编辑":"#1ABC9C","着色-节点":"#F39C12","动画-绑定":"#E91E63","渲染":"#C0392B","自定义":"#1ABC9C"};
 
-document.getElementById('totalCount').textContent = ALL.length;
+// ═══ Native Bridge ═══
+window._nativeCallbacks = {};
+window._nativeResolve = function(cid, result) {
+    if (window._nativeCallbacks[cid]) { window._nativeCallbacks[cid](result); delete window._nativeCallbacks[cid]; }
+};
+function callNative(action, params) {
+    params = params || {};
+    return new Promise(function(resolve) {
+        var cid = 'cb_' + Date.now() + '_' + Math.random().toString(36).substr(2, 6);
+        window._nativeCallbacks[cid] = resolve;
+        var msg = Object.assign({action: action, callbackId: cid}, params);
+        try { window.webkit.messageHandlers.nativeApp.postMessage(msg); } catch(e) { resolve({error:'not in native app'}); }
+        setTimeout(function() { if (window._nativeCallbacks[cid]) { window._nativeCallbacks[cid]({error:'timeout'}); delete window._nativeCallbacks[cid]; } }, 30000);
+    });
+}
 
-// ═══ 拼音首字母提取 ═══
+// ═══ Pinyin Initial Extraction ═══
 var P_INITIALS = ['zh','ch','sh','b','p','m','f','d','t','n','l','g','k','h','j','q','x','r','z','c','s','y','w'];
 function getPyInit(py) {
-  if (!py) return '';
-  var r = '', i = 0;
-  while (i < py.length) {
-    var found = false;
-    for (var j = 0; j < P_INITIALS.length; j++) {
-      if (py.substring(i, i + P_INITIALS[j].length) === P_INITIALS[j]) {
-        r += P_INITIALS[j][0]; i += P_INITIALS[j].length; found = true; break;
-      }
+    if (!py) return '';
+    var r = '', i = 0;
+    while (i < py.length) {
+        var found = false;
+        for (var j = 0; j < P_INITIALS.length; j++) {
+            if (py.substring(i, i + P_INITIALS[j].length) === P_INITIALS[j]) {
+                r += P_INITIALS[j][0]; i += P_INITIALS[j].length; found = true; break;
+            }
+        }
+        if (!found) i++;
     }
-    if (!found) i++;
-  }
-  return r;
+    return r;
 }
-// 为每条快捷键预计算拼音首字母
-ALL.forEach(function(s) { s._pi = getPyInit(PY[s.n]||''); });
 
-// ═══ 状态 ═══
-var S = { q: '', cat: null, hist: [] };
-try { var h = localStorage.getItem('bl_html_hist'); if (h) S.hist = JSON.parse(h); } catch(e) {}
+// ═══ Custom Shortcuts Management ═══
+var CUSTOM_KEY = 'bl_custom_v2';
+function loadCustom() {
+    try { var d = localStorage.getItem(CUSTOM_KEY); return d ? JSON.parse(d) : []; } catch(e) { return []; }
+}
+function saveCustom(arr) {
+    try { localStorage.setItem(CUSTOM_KEY, JSON.stringify(arr)); } catch(e) {}
+}
+function mergeCustom() {
+    var customs = loadCustom();
+    customs.forEach(function(s) { if (!s._pi) s._pi = getPyInit(s.py || PY[s.n] || ''); });
+    return customs;
+}
+
+// Build combined list (built-in + custom)
+function getAllShortcuts() {
+    var customs = mergeCustom();
+    var allCustoms = customs.map(function(s) { s._custom = true; return s; });
+    return ALL.concat(allCustoms);
+}
 
 function esc(x) { return (x||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
 
-// ═══ 搜索 ═══
+// ═══ State ═══
+var S = { q: '', cat: null, hist: [] };
+try { var h = localStorage.getItem('bl_html_hist'); if (h) S.hist = JSON.parse(h); } catch(e) {}
+
+// ═══ Search ═══
 function fuzzySearch(kw) {
-  kw = kw.toLowerCase().trim();
-  if (!kw) return [];
-  var out = [];
-  ALL.forEach(function(s) {
-    var sc = 0;
-    var nl = s.n.toLowerCase(), kl = s.k.toLowerCase(), dl = s.d.toLowerCase();
-    var ml = s.m.toLowerCase(), cl = s.c.toLowerCase();
-    var py = (PY[s.n]||'').toLowerCase();
-    var pi = (s._pi||'');
-    
-    if (nl === kw) sc += 100;
-    else if (nl.startsWith(kw)) sc += 85;
-    else if (nl.includes(kw)) sc += 70;
-    if (kl === kw) sc += 80;
-    else if (kl.startsWith(kw)) sc += 65;
-    else if (kl.includes(kw)) sc += 50;
-    if (dl.includes(kw)) sc += 60;
-    if (ml.includes(kw)) sc += 40;
-    if (cl.includes(kw)) sc += 35;
-    if (py === kw) sc += 50;
-    else if (py.startsWith(kw)) sc += 40;
-    else if (py.includes(kw)) sc += 30;
-    // 拼音首字母
-    if (pi === kw) sc += 35;
-    else if (pi.startsWith(kw)) sc += 25;
-    else if (pi.includes(kw)) sc += 15;
-    
-    var tokens = kw.split(/\s+/).filter(function(t){return t.length>0});
-    if (tokens.length>1 && tokens.every(function(t){return nl.includes(t)||py.includes(t)||dl.includes(t)})) sc += 25;
-    
-    if (sc > 0) out.push({s:s, score:sc});
-  });
-  var fo = {high:3,medium:2,low:1};
-  out.sort(function(a,b){return b.score-a.score||(fo[b.s.f]||0)-(fo[a.s.f]||0)});
-  return out;
+    kw = kw.toLowerCase().trim();
+    if (!kw) return [];
+    var ALL_MERGED = getAllShortcuts();
+    var out = [];
+    ALL_MERGED.forEach(function(s) {
+        var sc = 0;
+        var nl = s.n.toLowerCase(), kl = s.k.toLowerCase(), dl = s.d.toLowerCase();
+        var ml = s.m.toLowerCase(), cl = s.c.toLowerCase();
+        var py = (PY[s.n]||s.py||'').toLowerCase();
+        var pi = (s._pi||'');
+
+        if (nl === kw) sc += 100;
+        else if (nl.startsWith(kw)) sc += 85;
+        else if (nl.includes(kw)) sc += 70;
+        if (kl === kw) sc += 80;
+        else if (kl.startsWith(kw)) sc += 65;
+        else if (kl.includes(kw)) sc += 50;
+        if (dl.includes(kw)) sc += 60;
+        if (ml.includes(kw)) sc += 40;
+        if (cl.includes(kw)) sc += 35;
+        if (py === kw) sc += 50;
+        else if (py.startsWith(kw)) sc += 40;
+        else if (py.includes(kw)) sc += 30;
+        if (pi === kw) sc += 35;
+        else if (pi.startsWith(kw)) sc += 25;
+        else if (pi.includes(kw)) sc += 15;
+
+        var tokens = kw.split(/\s+/).filter(function(t){return t.length>0});
+        if (tokens.length>1 && tokens.every(function(t){return nl.includes(t)||py.includes(t)||dl.includes(t)})) sc += 25;
+
+        if (sc > 0) out.push({s:s, score:sc});
+    });
+    var fo = {high:3,medium:2,low:1};
+    out.sort(function(a,b){return b.score-a.score||(fo[b.s.f]||0)-(fo[a.s.f]||0)});
+    return out;
 }
 
 function doSearch() {
-  var q = document.getElementById('q').value.trim();
-  S.q = q;
-  var rsList = document.getElementById('resultsList');
-  var em = document.getElementById('empty');
-  var countEl = document.getElementById('count');
-  var catEl = document.getElementById('catLabel');
+    var q = document.getElementById('q').value.trim();
+    S.q = q;
+    var rsList = document.getElementById('resultsList');
+    var em = document.getElementById('empty');
+    var countEl = document.getElementById('count');
+    var catEl = document.getElementById('catLabel');
 
-  var results;
-  if (!q) {
-    results = S.cat ? ALL.filter(function(s){return s.c===S.cat}) : ALL.slice(0, 30);
-    catEl.textContent = S.cat || '全部';
-    countEl.innerHTML = '<b>'+results.length+'</b> 条快捷键';
-  } else {
-    results = fuzzySearch(q);
-    if (S.cat) results = results.filter(function(r){return r.s.c===S.cat});
-    catEl.textContent = S.cat || '全部';
-    countEl.innerHTML = results.length ? '找到 <b>'+results.length+'</b> 条' : '无匹配结果';
-  }
-
-  if (results.length===0) {
-    em.style.display='block'; rsList.style.display='none';
-  } else {
-    em.style.display='none'; rsList.style.display='block';
-    rsList.innerHTML = results.map(function(r){
-      var s = r.s||r, color = CC[s.c]||'#4A90D9';
-      var dot = s.f==='high'?'<span class="dot">● </span>':'';
-      return '<div class="card" style="border-left-color:'+color+'">'
-        + '<div class="top"><span class="name">'+dot+esc(s.n)+'</span><span class="key">'+esc(s.k)+'</span></div>'
-        + '<div class="tags">'
-          + '<span class="tag tag-cat">📁 '+esc(s.c)+'</span>'
-          + '<span class="tag tag-mode">'+esc(s.m)+'</span>'
-          + (s.f==='high'?'<span class="tag tag-high">● 高频</span>':'')
-        + '</div>'
-        + '<div class="desc">'+esc(s.d)+'</div>'
-      + '</div>';
-    }).join('');
-    
-    // 高亮匹配
-    if (q) {
-      var rx = new RegExp('('+q.replace(/[.*+?^${}()|[\\]\\\\]/g,'\\\\$&')+')','gi');
-      rsList.querySelectorAll('.name').forEach(function(el){
-        el.innerHTML = el.textContent.replace(rx,'<mark>$1</mark>');
-      });
+    var ALL_MERGED = getAllShortcuts();
+    var results;
+    if (!q) {
+        results = S.cat ? ALL_MERGED.filter(function(s){return s.c===S.cat}) : ALL_MERGED.slice(0, 30);
+        catEl.textContent = S.cat || '全部';
+        countEl.innerHTML = '<b>'+results.length+'</b> 条快捷键';
+    } else {
+        results = fuzzySearch(q);
+        if (S.cat) results = results.filter(function(r){return r.s.c===S.cat});
+        catEl.textContent = S.cat || '全部';
+        countEl.innerHTML = results.length ? '找到 <b>'+results.length+'</b> 条' : '无匹配结果';
     }
-  }
+
+    if (results.length===0) {
+        em.style.display='block'; rsList.style.display='none';
+    } else {
+        em.style.display='none'; rsList.style.display='block';
+        rsList.innerHTML = results.map(function(r){
+            var s = r.s||r, color = CC[s.c]||'#4A90D9';
+            var dot = s.f==='high'?'<span class="dot">● </span>':'';
+            var customTag = s._custom ? '<span class="tag tag-custom">✦ 自定义</span>' : '';
+            var cardActions = s._custom ? '<div class="card-actions"><button class="btn-edit" data-name="'+esc(s.n)+'">编辑</button><button class="btn-del" data-name="'+esc(s.n)+'">删除</button></div>' : '';
+            return '<div class="card" style="border-left-color:'+color+'">'
+              + '<div class="top"><span class="name">'+dot+esc(s.n)+'</span><span class="key">'+esc(s.k)+'</span></div>'
+              + '<div class="tags">'
+                + '<span class="tag tag-cat">📁 '+esc(s.c)+'</span>'
+                + '<span class="tag tag-mode">'+esc(s.m)+'</span>'
+                + (s.f==='high'?'<span class="tag tag-high">● 高频</span>':'')
+                + customTag
+              + '</div>'
+              + '<div class="desc">'+esc(s.d)+'</div>'
+              + cardActions
+            + '</div>';
+        }).join('');
+
+        // Highlight
+        if (q) {
+            var rx = new RegExp('('+q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+')','gi');
+            rsList.querySelectorAll('.name').forEach(function(el){
+                el.innerHTML = el.textContent.replace(rx,'<mark>$1</mark>');
+            });
+        }
+
+        // Bind custom card actions
+        rsList.querySelectorAll('.btn-del').forEach(function(btn){
+            btn.onclick = function() { deleteCustom(this.getAttribute('data-name')); };
+        });
+        rsList.querySelectorAll('.btn-edit').forEach(function(btn){
+            btn.onclick = function() { editCustom(this.getAttribute('data-name')); };
+        });
+    }
 }
 
-// ═══ 历史 ═══
+// ═══ History ═══
 function saveHist(term) {
-  if (!term) return;
-  S.hist = S.hist.filter(function(x){return x!==term});
-  S.hist.unshift(term);
-  if (S.hist.length>20) S.hist=S.hist.slice(0,20);
-  try{localStorage.setItem('bl_html_hist',JSON.stringify(S.hist))}catch(e){}
-  renderHist();
+    if (!term) return;
+    S.hist = S.hist.filter(function(x){return x!==term});
+    S.hist.unshift(term);
+    if (S.hist.length>20) S.hist=S.hist.slice(0,20);
+    try{localStorage.setItem('bl_html_hist',JSON.stringify(S.hist))}catch(e){}
+    renderHist();
 }
 function clearHist() { S.hist=[]; try{localStorage.removeItem('bl_html_hist')}catch(e){} renderHist(); }
 function renderHist() {
-  var h=S.hist.filter(function(x){return x}).slice(0,8);
-  var el=document.getElementById('htags');
-  el.innerHTML = h.map(function(t){return '<button data-term="'+esc(t)+'">'+esc(t)+'</button>'}).join('')
-    + (h.length?'<button class="clear" id="clearHistBtn">清空</button>':'');
-  el.querySelectorAll('button[data-term]').forEach(function(b){
-    b.onclick=function(){clickHist(this.getAttribute('data-term'))};
-  });
-  var cb=document.getElementById('clearHistBtn');
-  if(cb) cb.onclick=clearHist;
+    var h=S.hist.filter(function(x){return x}).slice(0,8);
+    var el=document.getElementById('htags');
+    el.innerHTML = h.map(function(t){return '<button data-term="'+esc(t)+'">'+esc(t)+'</button>'}).join('')
+      + (h.length?'<button class="clear" id="clearHistBtn">清空</button>':'');
+    el.querySelectorAll('button[data-term]').forEach(function(b){
+        b.onclick=function(){clickHist(this.getAttribute('data-term'))};
+    });
+    var cb=document.getElementById('clearHistBtn');
+    if(cb) cb.onclick=clearHist;
 }
 function clickHist(term) {
-  document.getElementById('q').value=term;
-  S.cat=null;
-  renderCats();
-  doSearch();
-  saveHist(term);
-  document.getElementById('q').focus();
+    document.getElementById('q').value=term; S.cat=null; renderCats(); doSearch(); saveHist(term); document.getElementById('q').focus();
 }
 
-// ═══ 分类 ═══
+// ═══ Category Filters ═══
 function renderCats() {
-  var el=document.getElementById('cfilters');
-  el.innerHTML = '<button class="'+(S.cat===null?'active':'')+'" data-cat="">全部</button>'
-    + CATS.map(function(c){return '<button class="'+(S.cat===c?'active':'')+'" data-cat="'+esc(c)+'">'+esc(c)+'</button>'}).join('');
-  el.querySelectorAll('button').forEach(function(b){
-    b.onclick=function(){
-      S.cat=this.getAttribute('data-cat')||null;
-      renderCats();
-      doSearch();
-    };
-  });
+    var customCats = loadCustom().map(function(s){return s.c});
+    var allCats = CATS.slice();
+    customCats.forEach(function(c){ if (c && !allCats.includes(c)) allCats.push(c); });
+    var el=document.getElementById('cfilters');
+    el.innerHTML = '<button class="'+(S.cat===null?'active':'')+'" data-cat="">全部</button>'
+      + allCats.map(function(c){return '<button class="'+(S.cat===c?'active':'')+'" data-cat="'+esc(c)+'">'+esc(c)+'</button>'}).join('');
+    el.querySelectorAll('button').forEach(function(b){
+        b.onclick=function(){
+            S.cat=this.getAttribute('data-cat')||null;
+            renderCats();
+            doSearch();
+        };
+    });
 }
 
-// ═══ 事件绑定 ═══
+// ═══ Custom Shortcuts CRUD ═══
+function addCustomShortcut(name, key, cat, mode, desc, py) {
+    var customs = loadCustom();
+    if (customs.some(function(s){return s.n===name})) { alert('已存在同名快捷键: '+name); return false; }
+    customs.push({c: cat||'自定义', n: name, k: key, m: mode||'全局', d: desc||'', f:'medium', py: py||'', _pi: getPyInit(py||'')});
+    saveCustom(customs);
+    refreshAfterCustomChange();
+    return true;
+}
+
+function deleteCustom(name) {
+    if (!confirm('确定删除快捷键: '+name+'?')) return;
+    var customs = loadCustom().filter(function(s){return s.n!==name});
+    saveCustom(customs);
+    refreshAfterCustomChange();
+}
+
+function editCustom(name) {
+    var customs = loadCustom();
+    var s = customs.find(function(s){return s.n===name});
+    if (!s) return;
+    document.getElementById('cf_name').value = s.n;
+    document.getElementById('cf_key').value = s.k;
+    document.getElementById('cf_cat').value = s.c;
+    document.getElementById('cf_mode').value = s.m;
+    document.getElementById('cf_desc').value = s.d;
+    document.getElementById('cf_py').value = s.py||'';
+    document.getElementById('addCustomBtn').textContent = '保存修改';
+    document.getElementById('addCustomBtn').setAttribute('data-edit', name);
+    openPanel();
+}
+
+function saveEditCustom(originalName) {
+    var customs = loadCustom();
+    var name = document.getElementById('cf_name').value.trim();
+    var key = document.getElementById('cf_key').value.trim();
+    if (!name || !key) { alert('名称和快捷键不能为空'); return; }
+    var idx = customs.findIndex(function(s){return s.n===originalName});
+    if (idx===-1) return;
+    // Check name conflict (if renamed)
+    if (name !== originalName && customs.some(function(s){return s.n===name})) { alert('已存在同名快捷键: '+name); return; }
+    customs[idx] = {
+        c: document.getElementById('cf_cat').value,
+        n: name,
+        k: key,
+        m: document.getElementById('cf_mode').value.trim()||'全局',
+        d: document.getElementById('cf_desc').value.trim(),
+        f: 'medium',
+        py: document.getElementById('cf_py').value.trim(),
+        _pi: getPyInit(document.getElementById('cf_py').value.trim())
+    };
+    saveCustom(customs);
+    clearForm();
+    refreshAfterCustomChange();
+}
+
+function clearForm() {
+    ['cf_name','cf_key','cf_cat','cf_mode','cf_desc','cf_py'].forEach(function(id){document.getElementById(id).value='';});
+    document.getElementById('cf_mode').value = '全局';
+    document.getElementById('cf_cat').value = '自定义';
+    var btn = document.getElementById('addCustomBtn');
+    btn.textContent = '添加快捷键';
+    btn.removeAttribute('data-edit');
+}
+
+function refreshAfterCustomChange() {
+    renderCustomList();
+    renderCats();
+    doSearch();
+    updateTotalCount();
+}
+
+function renderCustomList() {
+    var customs = loadCustom();
+    var el = document.getElementById('customList');
+    var countEl = document.getElementById('customCount');
+    countEl.textContent = customs.length ? '('+customs.length+')' : '';
+    if (!customs.length) {
+        el.innerHTML = '<div class="panel-empty"><div class="pe-icon">📝</div><div style="font-size:12px">暂无自定义快捷键<br>点击上方添加</div></div>';
+        return;
+    }
+    el.innerHTML = customs.map(function(s) {
+        return '<div class="custom-item">'
+          + '<div class="ci-info"><div class="ci-name">'+esc(s.n)+'</div><div class="ci-key">'+esc(s.k)+'</div><div class="ci-cat">'+esc(s.c)+' · '+esc(s.m)+'</div></div>'
+          + '<div class="ci-actions"><button class="btn btn-sm btn-secondary" data-edit="'+esc(s.n)+'">编辑</button><button class="btn btn-sm btn-danger" data-del="'+esc(s.n)+'">删除</button></div>'
+        + '</div>';
+    }).join('');
+    el.querySelectorAll('[data-edit]').forEach(function(b){ b.onclick=function(){ editCustom(this.getAttribute('data-edit')); }; });
+    el.querySelectorAll('[data-del]').forEach(function(b){ b.onclick=function(){ deleteCustom(this.getAttribute('data-del')); }; });
+}
+
+// ═══ Blender Keymap Parser ═══
+var BLENDER_OP_MAP = {
+    'object.select_all':'全选','mesh.subdivide':'细分','mesh.extrude_region':'挤出','mesh.inset_face':'内插面',
+    'mesh.loopcut':'环切','mesh.bevel':'倒角','mesh.knife_tool':'切刀','mesh.fill':'填充面',
+    'mesh.delete':'删除','mesh.duplicate':'复制','object.origin_set':'设置原点','object.join':'合并物体',
+    'transform.translate':'移动','transform.rotate':'旋转','transform.resize':'缩放',
+    'view3d.view_all':'查看全部','view3d.view_persportho':'透视/正交','view3d.localview':'局部视图',
+    'uv.unwrap':'展开UV','uv.smart_project':'智能UV投射','uv.pack_islands':'打包UV岛',
+    'anim.insert_keyframe':'插入关键帧','anim.delete_keyframe':'删除关键帧',
+    'render.render':'渲染图像','render.opengl_render':'OpenGL渲染',
+    'node.add_search':'搜索节点','node.group_make':'节点组',
+    'object.parent_set':'父子关系','object.parent_clear':'清除父级',
+    'object.apply_transform':'应用变换','mesh.separate':'分离',
+    'sculpt.dynamic_topology_toggle':'Dyntopo','object.modifier_apply':'应用修改器',
+    'mesh.bridge_edge_loops':'桥接循环边','mesh.mark_seam':'标记缝合边','mesh.mark_sharp':'标记锐边',
+    'mesh.flip_normals':'法线翻转','mesh.select_all':'全选','mesh.select_inverse':'反选',
+    'mesh.select_linked':'关联选择','mesh.select_similar':'相似选择',
+    'object.hide_render':'隐藏选中','object.hide_view_clear':'显示全部',
+    'object.modifier_add':'添加修改器','object.shade_smooth':'平滑着色','object.shade_flat':'平直着色',
+    'screen.redo_last':'调整上一步','view3d.edit_mesh_extrude':'挤出菜单',
+    'wm.search_menu':'搜索命令','wm.save_mainfile':'保存文件','wm.open_mainfile':'打开文件',
+    'wm.save_as_mainfile':'另存为','wm.link':'链接','wm.append':'追加',
+    'view3d.object_select_all':'全选','mesh.loop_to_select':'循环边选择',
+    'mesh.edgering_select':'并排边选择','uv.pin':'钉固UV','uv.select_linked':'选择UV岛',
+    'sculpt.mask_clear':'清除遮罩','sculpt.mask_invert':'反转遮罩',
+    'transform.shrink_fatten':'缩放','mesh.polybuild_face_at_cursor':'填充面',
+    'object.duplicate_move':'复制','screen.animation_play':'播放动画'
+};
+
+function parseKeymapPy(content) {
+    var results = [];
+    var lines = content.split('\n');
+    var currentKeymap = '';
+    var re = /keymap\s*=\s*keyconfigs.*keymaps\.new\(\s*name\s*=\s*'([^']+)'/;
+    var reItem = /keymap_items\.new\(\s*'([^']+)',\s*'([^']+)',\s*'([^']+)'([^)]*)\)/;
+
+    for (var i = 0; i < lines.length; i++) {
+        var line = lines[i].trim();
+        var kmMatch = re.exec(line);
+        if (kmMatch) { currentKeymap = kmMatch[1]; continue; }
+
+        var m = reItem.exec(line);
+        if (m) {
+            var opId = m[1];
+            var key = m[2];
+            var pressType = m[3];
+            var extra = m[4];
+
+            // Parse modifiers
+            var shift = /shift\s*=\s*True/i.test(extra);
+            var ctrl = /ctrl\s*=\s*True/i.test(extra);
+            var alt = /alt\s*=\s*True/i.test(extra);
+
+            var keyStr = '';
+            if (ctrl) keyStr += 'Ctrl+';
+            if (shift) keyStr += 'Shift+';
+            if (alt) keyStr += 'Alt+';
+            keyStr += key;
+
+            // Map operator to name
+            var name = BLENDER_OP_MAP[opId] || opId.split('.').pop().replace(/_/g,' ');
+            var cat = mapKeymapToCategory(currentKeymap);
+
+            results.push({
+                c: cat,
+                n: name,
+                k: keyStr,
+                m: currentKeymap || '全局',
+                d: '从Blender Keymap导入: ' + opId,
+                f: 'medium',
+                py: '',
+                _pi: '',
+                _custom: true,
+                _opId: opId
+            });
+        }
+    }
+    return results;
+}
+
+function mapKeymapToCategory(km) {
+    km = (km||'').toLowerCase();
+    if (km.includes('mesh') || km.includes('edit')) return '编辑模式-建模';
+    if (km.includes('sculpt')) return '雕刻模式';
+    if (km.includes('uv')) return 'UV编辑';
+    if (km.includes('node') || km.includes('shader')) return '着色-节点';
+    if (km.includes('anim') || km.includes('pose') || km.includes('action') || km.includes('graph') || km.includes('nla')) return '动画-绑定';
+    if (km.includes('view3d') || km.includes('view')) return '视图导航';
+    if (km.includes('render')) return '渲染';
+    if (km.includes('object') || km.includes('transform') || km.includes('select')) return '通用操作';
+    return '自定义';
+}
+
+// ═══ JSON Import/Export ═══
+function exportToJson(shortcuts, filename) {
+    var data = {
+        name: 'Blender 快捷键包',
+        version: '1.0',
+        exported: new Date().toISOString().slice(0,10),
+        shortcuts: shortcuts
+    };
+    var content = JSON.stringify(data, null, 2);
+    callNative('saveFile', {content: content, defaultName: filename || 'blender_shortcuts.json', ext: 'json'}).then(function(res){
+        if (res.success) alert('导出成功: ' + res.path);
+    });
+}
+
+function importFromJson(content) {
+    try {
+        var data = JSON.parse(content);
+        var shortcuts = data.shortcuts || data;
+        if (!Array.isArray(shortcuts)) throw new Error('格式错误：需要一个快捷键数组');
+        var customs = loadCustom();
+        var added = 0, skipped = 0;
+        shortcuts.forEach(function(s) {
+            if (!s.n || !s.k) { skipped++; return; }
+            if (customs.some(function(c){return c.n===s.n})) { skipped++; return; }
+            customs.push({
+                c: s.c || '自定义',
+                n: s.n,
+                k: s.k,
+                m: s.m || '全局',
+                d: s.d || '',
+                f: s.f || 'medium',
+                py: s.py || '',
+                _pi: getPyInit(s.py || '')
+            });
+            added++;
+        });
+        saveCustom(customs);
+        refreshAfterCustomChange();
+        return '导入完成：新增 ' + added + ' 条，跳过 ' + skipped + ' 条';
+    } catch(e) {
+        return '导入失败：' + e.message;
+    }
+}
+
+// ═══ Panel UI ═══
+function openPanel() {
+    document.getElementById('panelOverlay').classList.add('show');
+    document.getElementById('customPanel').classList.add('open');
+    renderCustomList();
+    populateCatSelect();
+}
+function closePanel() {
+    document.getElementById('panelOverlay').classList.remove('show');
+    document.getElementById('customPanel').classList.remove('open');
+    clearForm();
+}
+function populateCatSelect() {
+    var sel = document.getElementById('cf_cat');
+    sel.innerHTML = '<option value="自定义">自定义</option>';
+    CATS.forEach(function(c){ sel.innerHTML += '<option value="'+esc(c)+'">'+esc(c)+'</option>'; });
+}
+
+function switchTab(tabName) {
+    document.querySelectorAll('.panel-tabs button').forEach(function(b){
+        b.classList.toggle('active', b.getAttribute('data-tab')===tabName);
+    });
+    document.querySelectorAll('.tab-content').forEach(function(tc){ tc.style.display='none'; });
+    var target = document.getElementById('tab-'+tabName);
+    if (target) target.style.display='block';
+}
+
+function updateTotalCount() {
+    document.getElementById('totalCount').textContent = getAllShortcuts().length;
+}
+
+// ═══ Event Bindings ═══
 document.getElementById('q').addEventListener('input', doSearch);
 document.getElementById('q').addEventListener('keydown', function(e){
-  if(e.key==='Enter' && this.value.trim()) saveHist(this.value.trim());
-  if(e.key==='Escape'){ this.value=''; S.cat=null; renderCats(); doSearch(); }
+    if(e.key==='Enter' && this.value.trim()) saveHist(this.value.trim());
+    if(e.key==='Escape'){ this.value=''; S.cat=null; renderCats(); doSearch(); }
 });
 var saveTimer;
 document.getElementById('q').addEventListener('keyup', function(){
-  clearTimeout(saveTimer);
-  if(this.value.trim()) saveTimer=setTimeout(function(){saveHist(document.getElementById('q').value.trim())},1500);
+    clearTimeout(saveTimer);
+    if(this.value.trim()) saveTimer=setTimeout(function(){saveHist(document.getElementById('q').value.trim())},1500);
 });
 
-// ═══ 初始化 ═══
+// Settings panel
+document.getElementById('settingsBtn').onclick = openPanel;
+document.getElementById('closePanelBtn').onclick = closePanel;
+document.getElementById('panelOverlay').onclick = closePanel;
+document.querySelectorAll('.panel-tabs button').forEach(function(b){
+    b.onclick = function(){ switchTab(this.getAttribute('data-tab')); };
+});
+
+// Add custom shortcut
+document.getElementById('addCustomBtn').onclick = function() {
+    var editName = this.getAttribute('data-edit');
+    if (editName) { saveEditCustom(editName); return; }
+
+    var name = document.getElementById('cf_name').value.trim();
+    var key = document.getElementById('cf_key').value.trim();
+    if (!name || !key) { alert('名称和快捷键不能为空'); return; }
+    var cat = document.getElementById('cf_cat').value;
+    var mode = document.getElementById('cf_mode').value.trim()||'全局';
+    var desc = document.getElementById('cf_desc').value.trim();
+    var py = document.getElementById('cf_py').value.trim();
+
+    if (addCustomShortcut(name, key, cat, mode, desc, py)) {
+        clearForm();
+    }
+};
+
+// Import keymap
+document.getElementById('importKeymapBtn').onclick = function() {
+    callNative('openFile', {filters: ['.py']}).then(function(res) {
+        if (!res.success) return;
+        var log = document.getElementById('importLog');
+        log.textContent = '正在解析 Keymap 文件...';
+        setTimeout(function() {
+            var results = parseKeymapPy(res.content);
+            if (!results.length) { log.textContent = '⚠ 未找到有效的快捷键定义'; return; }
+            var customs = loadCustom();
+            var added = 0, skipped = 0;
+            results.forEach(function(s) {
+                if (customs.some(function(c){return c.n===s.n})) { skipped++; return; }
+                customs.push(s);
+                added++;
+            });
+            saveCustom(customs);
+            refreshAfterCustomChange();
+            log.textContent = '✅ Keymap导入完成：新增 '+added+' 条，跳过 '+skipped+' 条（共识别 '+results.length+' 条）';
+        }, 100);
+    });
+};
+
+// Import JSON
+document.getElementById('importJsonBtn').onclick = function() {
+    callNative('openFile', {filters: ['.json']}).then(function(res) {
+        if (!res.success) return;
+        var log = document.getElementById('importLog');
+        var msg = importFromJson(res.content);
+        log.textContent = msg;
+    });
+};
+
+// Export
+document.getElementById('exportCustomBtn').onclick = function() {
+    var customs = loadCustom();
+    if (!customs.length) { alert('暂无自定义快捷键可导出'); return; }
+    exportToJson(customs, 'blender_custom_shortcuts.json');
+};
+document.getElementById('exportAllBtn').onclick = function() {
+    exportToJson(getAllShortcuts(), 'blender_all_shortcuts.json');
+};
+
+// ═══ Init ═══
+document.getElementById('totalCount').textContent = getAllShortcuts().length;
+ALL.forEach(function(s) { s._pi = getPyInit(PY[s.n]||''); });
 renderCats();
 renderHist();
 doSearch();
-console.log('[Blender快捷键] 已就绪, '+ALL.length+' 条快捷键');
+
+// Get app version from native
+callNative('getAppVersion').then(function(res) {
+    if (res.version) document.getElementById('versionTag').textContent = 'v' + res.version;
+});
+
+console.log('[Blender快捷键] 已就绪, 内置 '+ALL.length+' 条, 自定义 '+loadCustom().length+' 条');
 </script>
 </body>
 </html>
